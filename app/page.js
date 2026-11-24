@@ -102,7 +102,7 @@ function TanjiroModel() {
     clone.scale.set(1, 1, 1);
 
     // Temporary orientation correction.
-    clone.rotation.x = -Math.PI / 2;
+    clone.rotation.set(0, 0, Math.PI / 2);
 
     clone.updateMatrixWorld(true);
 
