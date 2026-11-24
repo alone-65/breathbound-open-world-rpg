@@ -96,8 +96,17 @@ function TanjiroModel() {
   const model = useMemo(() => {
     const clone = scene.clone(true);
 
+    // Reset original transforms.
+    clone.position.set(0, 0, 0);
+    clone.rotation.set(0, 0, 0);
+    clone.scale.set(1, 1, 1);
+
+    // Temporary orientation correction.
+    clone.rotation.x = -Math.PI / 2;
+
     clone.updateMatrixWorld(true);
 
+    // Calculate bounds after rotation.
     const box = new THREE.Box3().setFromObject(clone);
 
     const size = new THREE.Vector3();
@@ -111,18 +120,22 @@ function TanjiroModel() {
 
     clone.scale.multiplyScalar(scale);
 
-    // Center the model and place its feet on the ground.
+    // Center the model and place it on the ground.
     clone.position.set(
       -center.x * scale,
       -box.min.y * scale,
       -center.z * scale
     );
 
+    clone.updateMatrixWorld(true);
+
     return clone;
   }, [scene]);
 
   return <primitive object={model} />;
 }
+
+useGLTF.preload("/models/kamado_tanjiro.glb");
 
 // ==========================================
 // PLAYER
@@ -677,5 +690,5 @@ export default function Home() {
       )}
     </main>
   );
-      }
-        
+    }
+    
